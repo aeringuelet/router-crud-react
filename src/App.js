@@ -45,7 +45,19 @@ function App() {
               <Products products={products} />
             )} 
           />
-          <Route exact path="/products/edit/:id" component={EditProduct} />
+          <Route exact path="/products/edit/:id" 
+            render={ props => {
+              const idProd = parseInt(props.match.params.id);
+              const prod = products.filter(prod => prod.id === idProd)[0];
+
+              return (
+                <EditProduct 
+                  product={prod} 
+                  setRefresh={setRefresh}
+                />
+              )
+            }} 
+          />
           <Route exact path="/products/:id" component={Product} />
         </Switch>
       </main>
