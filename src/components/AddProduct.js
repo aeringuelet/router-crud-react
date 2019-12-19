@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Error from "./Error";
 import Axios from "axios";
+import { withRouter } from 'react-router-dom'; 
+import Swal from 'sweetalert2';
 
-const AddProduct = () => {
+const AddProduct = ({ history, setRefresh }) => {
     const [ name, setName ] = useState('');
     const [ price, setPrice ] = useState('');
     const [ category, setCategory ] = useState('');
@@ -25,9 +27,25 @@ const AddProduct = () => {
                 price,
                 category
             })
+
+            if(response.status === 201) {
+                Swal.fire(
+                    'Dish created!',
+                    'The dish was created succesfully',
+                    'success'
+                );
+            }
         } catch (error) {
             console.log(error);
+            Swal.fire(
+                'Error!',
+                'Error trying to create dish',
+                'error'
+            )
         }
+
+        setRefresh(true);
+        history.push('/products');
     }
 
 	return (
@@ -118,4 +136,4 @@ const AddProduct = () => {
 	);
 };
 
-export default AddProduct;
+export default withRouter(AddProduct);

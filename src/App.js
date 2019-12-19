@@ -10,18 +10,23 @@ import Header from './components/Header';
 
 function App() {
   const [ products, setProducts ] = useState([]);
+  const [ refresh, setRefresh ] = useState(true);
 
   useEffect(() => {
-    const getFromAPI = async () => {
-      let url = `http://localhost:4000/restaurant`;
+    if(refresh) {
+      const getFromAPI = async () => {
+        let url = `http://localhost:4000/restaurant`;
+  
+        const result = await axios.get(url);
+        
+        setProducts(result.data);
+      }
+  
+      getFromAPI();
 
-      const result = await axios.get(url);
-      
-      setProducts(result.data);
+      setRefresh(false);
     }
-
-    getFromAPI();
-  }, [])
+  }, [ refresh ])
 
 
   return (
@@ -30,11 +35,15 @@ function App() {
 
       <main className="container mt-5">
         <Switch>
-          <Route exact path="/add" component={AddProduct} />
+          <Route exact path="/add" 
+            render={() => (
+              <AddProduct setRefresh={setRefresh} />
+            )} 
+          />
           <Route exact path="/products" 
             render={() => (
-                            <Products products={products} />
-                          )} 
+              <Products products={products} />
+            )} 
           />
           <Route exact path="/products/edit/:id" component={EditProduct} />
           <Route exact path="/products/:id" component={Product} />
