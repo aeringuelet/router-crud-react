@@ -1,18 +1,45 @@
 import React, { useState } from "react";
+import Error from "./Error";
+import Axios from "axios";
 
 const AddProduct = () => {
     const [ name, setName ] = useState('');
     const [ price, setPrice ] = useState('');
     const [ category, setCategory ] = useState('');
+    const [ error, setError ] = useState(false);
 
-    const setRadioValue = e => {
-        setCategory(e.target.value);
+    const addDish = async e => {
+        e.preventDefault();
+
+        if(name === '' || price === '' || category === '') {
+            setError(true);
+            return;
+        }
+
+        let url = `http://localhost:4000/restaurant`;
+        setError(false);
+
+        try {
+            const response = await Axios.post(url, {
+                name,
+                price,
+                category
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 	return (
 		<div className="col-md-8 mx-auto">
 			<h1 className="text-center">Add new dish</h1>
-			<form className="mt-5">
+
+            { (error) ? <Error message="All fields are mandatory" /> : null }
+
+            <form
+                onSubmit={addDish} 
+                className="mt-5"
+            >
 				<div className="form-group">
 					<label>Dish Name</label>
 					<input
