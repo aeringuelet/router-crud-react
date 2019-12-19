@@ -1,0 +1,10 @@
+{
+    "restaurant": [
+        {
+            "id": 1,
+            "price": 200,
+            "name":  "CheeseCake",
+            "category": "dessert"
+        }
+    ]
+}
