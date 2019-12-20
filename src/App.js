@@ -42,7 +42,7 @@ function App() {
           />
           <Route exact path="/products" 
             render={() => (
-              <Products products={products} />
+              <Products products={products} setRefresh={setRefresh} />
             )} 
           />
           <Route exact path="/products/edit/:id" 

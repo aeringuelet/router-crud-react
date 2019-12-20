@@ -14,13 +14,23 @@ const EditProduct = (props) => {
     const [ category, setCategory ] = useState('');
 
     const editDish = async e => {
-        e.preventDefault();
+		e.preventDefault();
+		
+		const newName = nameRef.current.value,
+				newPirce = priceRef.current.value;
+
+		if(newName === '' || newPirce  === '') {
+			setError(true);
+			return;
+		}
+
+		setError(false);
 
         let newCategory = (category === '') ? product.category : category;
 
         const editedDish = {
-            name: nameRef.current.value,
-            price: priceRef.current.value,
+            name: newName,
+            price: newPirce,
             category: newCategory
         }
 
